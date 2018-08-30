@@ -10,8 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.List;
-
-
+import java.util.Optional;
 
 
 @RunWith(SpringRunner.class)
@@ -22,8 +21,8 @@ public class CategoryServiceImplTest {
 
     @Test
     public void findById() {
-        ProductCategory productCategory = categoryService.findById(1);
-        Assert.assertEquals(new Integer(1),productCategory.getCategoryId());
+        Optional<ProductCategory> productCategory = categoryService.findById(1);
+        Assert.assertEquals(new Integer(1),productCategory.get().getCategoryId());
     }
 
     @Test
@@ -41,7 +40,7 @@ public class CategoryServiceImplTest {
 
     @Test
     public void save() {
-        ProductCategory productCategory = new ProductCategory("男生专享",4);
+        ProductCategory productCategory = new ProductCategory("女生专享",3);
         ProductCategory result = categoryService.save(productCategory);
         Assert.assertNotNull(result);
     }

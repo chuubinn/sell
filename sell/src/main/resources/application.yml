@@ -6,5 +6,19 @@ spring:
     url: jdbc:mysql://localhost:3306/sell?characterEncoding=utf-8&useSSL=false
   jpa:
     show-sql: true
+  jackson:
+    default-property-inclusion: non_null
+server:
+  servlet:
+    context-path: /sell
+
+wechat:
+  mpAppId: wxcac4902089958360
+  mpAppSecret: 52bcc0ea04c19eb85a292c1aa197f0b0
+  mchId: 1409146202
+  mcnKey: c976503d34ca432c601361f969fd8d85
+  keyPath: /var/weixin_cerf/h5.p12
+  notifyUrl: http://chub.natapp1.cc/sell/pay/notify
+
 
 
