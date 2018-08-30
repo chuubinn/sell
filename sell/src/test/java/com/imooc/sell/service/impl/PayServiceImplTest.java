@@ -27,6 +27,5 @@ public class PayServiceImplTest {
         OrderDTO orderDTO = orderService.findById("123456");
         payService.create(orderDTO);
 
-
     }
 }

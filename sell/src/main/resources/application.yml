@@ -13,12 +13,12 @@ server:
     context-path: /sell
 
 wechat:
-  mpAppId: wxcac4902089958360
-  mpAppSecret: 52bcc0ea04c19eb85a292c1aa197f0b0
+  mpAppId: wxacc3c0f3250e5e0a
+  mpAppSecret: 31e522af216a169757f259a2e1c2f7d8
   mchId: 1409146202
   mcnKey: c976503d34ca432c601361f969fd8d85
-  keyPath: /var/weixin_cerf/h5.p12
-  notifyUrl: http://chub.natapp1.cc/sell/pay/notify
+  keyPath: /var/weixin_cer/h5.p12
+  notifyUrl: http://chub.natapp1.cc/sell/pay/notify #异步通知
 
 
 
