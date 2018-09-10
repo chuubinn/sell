@@ -8,6 +8,9 @@ spring:
     show-sql: true
   jackson:
     default-property-inclusion: non_null
+  redis:
+    host: 192.168.199.188
+    port: 6379
 server:
   servlet:
     context-path: /sell
@@ -15,10 +18,22 @@ server:
 wechat:
   mpAppId: wxacc3c0f3250e5e0a
   mpAppSecret: 31e522af216a169757f259a2e1c2f7d8
+  openAppid:
+  openAppSecret:
   mchId: 1409146202
   mcnKey: c976503d34ca432c601361f969fd8d85
   keyPath: /var/weixin_cer/h5.p12
   notifyUrl: http://chub.natapp1.cc/sell/pay/notify #异步通知
+  templateId: #模板id
+    orderStatus:
 
 
-
+projectUrl:
+  wechatMpAuthorize: http://chub.natapp1.cc
+  wechatOpenAuthorize: http://chub.natapp1.cc
+  sell: http://chub.natapp1.cc
+logging:
+  level:
+    com.imooc.sell.dataobject.mapper: trace
+mybatis:
+  mapper-locations: classpath:mapper/*.xml

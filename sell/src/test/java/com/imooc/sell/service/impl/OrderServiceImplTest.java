@@ -1,8 +1,8 @@
 package com.imooc.sell.service.impl;
 
 import com.imooc.sell.dataobject.OrderDetail;
-import com.imooc.sell.dataobject.enums.OrderMasterEnum;
-import com.imooc.sell.dataobject.enums.PayStatusEnum;
+import com.imooc.sell.enums.OrderMasterEnum;
+import com.imooc.sell.enums.PayStatusEnum;
 import com.imooc.sell.dto.OrderDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -84,5 +84,11 @@ public class OrderServiceImplTest {
         OrderDTO orderDTO = orderService.findById(ORDER_ID);
         OrderDTO result = orderService.paid(orderDTO);
         Assert.assertEquals(PayStatusEnum.SUCCESS.getCode(),result.getPayStatus());
+    }
+    @Test
+    public void list(){
+        PageRequest request = PageRequest.of(0,2);
+        Page<OrderDTO> orderDTOPage = orderService.findList(request);
+        Assert.assertNotEquals(0,orderDTOPage.getTotalElements());
     }
 }

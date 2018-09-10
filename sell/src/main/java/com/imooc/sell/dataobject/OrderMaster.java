@@ -1,8 +1,8 @@
 package com.imooc.sell.dataobject;
 
 
-import com.imooc.sell.dataobject.enums.OrderMasterEnum;
-import com.imooc.sell.dataobject.enums.PayStatusEnum;
+import com.imooc.sell.enums.OrderMasterEnum;
+import com.imooc.sell.enums.PayStatusEnum;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.Entity;

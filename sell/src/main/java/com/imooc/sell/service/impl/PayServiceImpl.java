@@ -1,6 +1,6 @@
 package com.imooc.sell.service.impl;
 
-import com.imooc.sell.dataobject.enums.ResultEnum;
+import com.imooc.sell.enums.ResultEnum;
 import com.imooc.sell.dto.OrderDTO;
 import com.imooc.sell.exception.SellException;
 import com.imooc.sell.service.OrderService;

@@ -4,17 +4,15 @@ import com.imooc.sell.converter.OrderMaster2OrderDTOConverter;
 import com.imooc.sell.dataobject.OrderDetail;
 import com.imooc.sell.dataobject.OrderMaster;
 import com.imooc.sell.dataobject.ProductInfo;
-import com.imooc.sell.dataobject.enums.OrderMasterEnum;
-import com.imooc.sell.dataobject.enums.PayStatusEnum;
-import com.imooc.sell.dataobject.enums.ResultEnum;
+import com.imooc.sell.enums.OrderMasterEnum;
+import com.imooc.sell.enums.PayStatusEnum;
+import com.imooc.sell.enums.ResultEnum;
 import com.imooc.sell.dto.CartDTO;
 import com.imooc.sell.dto.OrderDTO;
 import com.imooc.sell.exception.SellException;
 import com.imooc.sell.repository.OrderDetailRepository;
 import com.imooc.sell.repository.OrderMasterRepository;
-import com.imooc.sell.service.OrderService;
-import com.imooc.sell.service.PayService;
-import com.imooc.sell.service.ProductService;
+import com.imooc.sell.service.*;
 import com.imooc.sell.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -47,6 +45,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private PayService payService;
 
+    @Autowired
+    private PushMessage pushMessage;
+
+    @Autowired
+    private WebSocket webSocket;
+
     @Override
     @Transactional
     public OrderDTO create(OrderDTO orderDTO) {
@@ -54,12 +58,15 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal orderAmount = new BigDecimal(BigInteger.ZERO);
         //1.查询商品（数量，价格）
         for (OrderDetail orderDetail:orderDTO.getOrderDetailList()){
-            Optional<ProductInfo> productInfo = productService.findById(orderDetail.getProductId());
+            ProductInfo productInfo = productService.findById(orderDetail.getProductId());
             if (productInfo == null){
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+
+                //银行支付抛出错误
+    //          throw new ResponseBankException();
             }
             //2.计算总价
-           orderAmount =  productInfo.get().getProductPrice()
+           orderAmount =  productInfo.getProductPrice()
                    .multiply(new BigDecimal(orderDetail.getProductQuantity()))//一件商品的总价
                    .add(orderAmount);//全部商品加起来的总价
 
@@ -85,6 +92,10 @@ public class OrderServiceImpl implements OrderService {
                 ).collect(Collectors.toList());
 
         productService.decreaseStock(cartDTOList);
+
+        //发送websocket消息
+        webSocket.sendMessage("有新的订单");
+
         return orderDTO;
     }
 
@@ -164,6 +175,10 @@ public class OrderServiceImpl implements OrderService {
             log.error("【完结订单】 更新失败,orderMaster={}",orderMaster);
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
+
+        //推送微信模板消息
+        pushMessage.orderStatuas(orderDTO);
+
         return orderDTO;
     }
 
@@ -191,5 +206,13 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return orderDTO;
+    }
+
+    @Override
+    public Page<OrderDTO> findList(Pageable pageable) {
+            Page<OrderMaster> orderMasterPage = orderMasterRepository.findAll(pageable);
+        List<OrderDTO> orderDTOList =  OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
+        return new PageImpl<OrderDTO>(orderDTOList,pageable,orderMasterPage.getTotalElements());
+
     }
 }

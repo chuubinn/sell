@@ -1,13 +1,13 @@
 package com.imooc.sell.controller;
 
 import com.imooc.sell.converter.OrderForm2OrderDTOConverter;
-import com.imooc.sell.dataobject.enums.ResultEnum;
+import com.imooc.sell.enums.ResultEnum;
 import com.imooc.sell.dto.OrderDTO;
 import com.imooc.sell.exception.SellException;
 import com.imooc.sell.form.OrderForm;
 import com.imooc.sell.service.BuyerService;
 import com.imooc.sell.service.OrderService;
-import com.imooc.sell.service.VO.ResultVO;
+import com.imooc.sell.VO.ResultVO;
 import com.imooc.sell.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
